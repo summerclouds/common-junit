@@ -17,7 +17,11 @@ package org.summerclounds.common.junit;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -27,6 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.jupiter.api.TestInfo;
 import org.slf4j.LoggerFactory;
+import org.summerclounds.common.internal.TCloseable;
 import org.summerclounds.common.internal.TUri;
 import org.summerclounds.common.internal.TXml;
 import org.w3c.dom.Document;
@@ -146,4 +151,61 @@ public class TestUtil {
                         + (method == null || method.isEmpty() ? "?" : method.get().getName()));
     }
 
+    
+    public static TCloseable withEnvironment(String ... keyValue ) {
+    	HashMap<String, String> newenv = new HashMap<>(System.getenv());
+    	for (int i = 0; i < keyValue.length; i=i+2)
+    		newenv.put(keyValue[i],keyValue[i+1]);
+    	
+    	try {
+	    	return new TCloseable() {
+				
+	    		private HashMap<String,String> oldEnv;
+				{
+	    			oldEnv = new HashMap<>(System.getenv());
+	    			setEnv(newenv);
+	    		}
+				@Override
+				public void close() {
+					try {
+						setEnv(oldEnv);
+					} catch (Exception e) {
+			    		throw new RuntimeException("can't reset environment",e);
+					}
+				}
+			};
+    	} catch (Exception e) {
+    		throw new RuntimeException("can't set environment",e);
+    	}
+    }
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public static void setEnv(Map<String, String> newenv) throws Exception {
+    	  try {
+    	    Class<?> processEnvironmentClass = Class.forName("java.lang.ProcessEnvironment");
+    	    Field theEnvironmentField = processEnvironmentClass.getDeclaredField("theEnvironment");
+    	    theEnvironmentField.setAccessible(true);
+    	    Map<String, String> env = (Map<String, String>) theEnvironmentField.get(null);
+    	    env.clear();
+    	    env.putAll(newenv);
+    	    Field theCaseInsensitiveEnvironmentField = processEnvironmentClass.getDeclaredField("theCaseInsensitiveEnvironment");
+    	    theCaseInsensitiveEnvironmentField.setAccessible(true);
+    	    Map<String, String> cienv = (Map<String, String>)     theCaseInsensitiveEnvironmentField.get(null);
+    	    cienv.clear();
+    	    cienv.putAll(newenv);
+    	  } catch (NoSuchFieldException e) {
+    	    Class[] classes = Collections.class.getDeclaredClasses();
+    	    Map<String, String> env = System.getenv();
+    	    for(Class cl : classes) {
+    	      if("java.util.Collections$UnmodifiableMap".equals(cl.getName())) {
+    	        Field field = cl.getDeclaredField("m");
+    	        field.setAccessible(true);
+    	        Object obj = field.get(env);
+    	        Map<String, String> map = (Map<String, String>) obj;
+    	        map.clear();
+    	        map.putAll(newenv);
+    	      }
+    	    }
+    	  }
+    	}
 }
