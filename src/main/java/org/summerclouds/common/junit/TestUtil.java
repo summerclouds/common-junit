@@ -15,14 +15,23 @@
  */
 package org.summerclouds.common.junit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +41,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.junit.jupiter.api.TestInfo;
 import org.slf4j.LoggerFactory;
 import org.summerclouds.common.internal.TCloseable;
+import org.summerclouds.common.internal.TCrypt;
+import org.summerclouds.common.internal.TString;
 import org.summerclouds.common.internal.TUri;
 import org.summerclouds.common.internal.TXml;
 import org.w3c.dom.Document;
@@ -208,4 +219,89 @@ public class TestUtil {
     	    }
     	  }
     	}
+    
+    
+    public static void recordOrValidateDirectory(File dir, File definition) throws Exception {
+    	if (definition.exists())
+    		validateDirectory(dir, definition);
+    	else
+    		recordDirectory(dir, definition);
+    }
+
+	private static void validateDirectory(File dir, File definition) throws Exception {
+		System.out.println(">>> Validate " + dir + " from " + definition);
+		int len = dir.getPath().length();
+		Properties prop = new Properties();
+		try (InputStream is = new FileInputStream(definition)) {
+			prop.load(is);
+		}
+		validateDirectory(dir, prop, len);
+	}
+
+	private static void validateDirectory(File dir, Properties definition, int remove) throws Exception {
+		if (dir.isFile()) {
+			String md5 = "";
+			try (InputStream is = new FileInputStream(dir)) {
+				md5 = TCrypt.md5(is);
+			}
+			String old = definition.getProperty("file-" + dir.getPath().substring(remove));
+			assertEquals(old, md5, "File " + dir.getPath() + " is changed, new MD5: " + md5);
+		}
+		if (dir.isDirectory()) {
+			Set<String> dirs = new TreeSet<>();
+			Set<String> files = new TreeSet<>();
+			for (File sub : dir.listFiles()) {
+				if (!sub.getName().startsWith(".")) {
+					if (sub.isFile())
+						files.add(sub.getName());
+					else
+						dirs.add(sub.getName());
+					validateDirectory(sub, definition, remove);
+				}
+			}
+			String dirsStr = TString.join(dirs, ",");
+			String filesStr = TString.join(files, ",");
+			String dirsOld = definition.getProperty("dirs-" + dir.getPath().substring(remove));
+			String filesOld = definition.getProperty("files-" + dir.getPath().substring(remove));
+				
+			assertEquals(dirsOld, dirsStr, "Directories in " + dir.getParent() + " changed");
+			assertEquals(filesOld, filesStr, "Files in " + dir.getParent() + " changed");
+		}
+	}
+
+	public static void recordDirectory(File dir, File definition) throws Exception {
+		System.out.println(">>> Record " + dir + " to " + definition);
+		int len = dir.getPath().length();
+		Properties prop = new Properties();
+		recordDirectory(dir, prop, len);
+		try (OutputStream os = new FileOutputStream(definition)) {
+			prop.store(os, dir.getPath());
+		}
+	}
+	
+	private static void recordDirectory(File dir, Properties definition, int remove) throws Exception {
+		if (dir.isFile()) {
+			try (InputStream is = new FileInputStream(dir)) {
+				String md5 = TCrypt.md5(is);
+				definition.setProperty("file-" + dir.getPath().substring(remove), md5);
+			}
+		}
+		if (dir.isDirectory()) {
+			Set<String> dirs = new TreeSet<>();
+			Set<String> files = new TreeSet<>();
+			for (File sub : dir.listFiles()) {
+				if (!sub.getName().startsWith(".")) {
+					if (sub.isFile())
+						files.add(sub.getName());
+					else
+						dirs.add(sub.getName());
+					recordDirectory(sub, definition, remove);
+				}
+			}
+			definition.setProperty("dirs-" + dir.getPath().substring(remove), TString.join(dirs, ","));
+			definition.setProperty("files-" + dir.getPath().substring(remove), TString.join(files, ","));
+		}
+	}
+    
+    
 }

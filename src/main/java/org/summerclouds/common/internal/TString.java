@@ -995,7 +995,7 @@ public class TString {
         return sb.toString();
     }
 
-    public static String join(List<?> src, String glue) {
+    public static String join(Collection<?> src, String glue) {
         return join(src.iterator(), glue);
     }
 
