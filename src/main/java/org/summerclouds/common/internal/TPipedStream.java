@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2002 Mike Hummel (mh@mhus.de)
+ * Copyright (C) 2022 Mike Hummel (mh@mhus.de)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -99,9 +99,8 @@ public class TPipedStream implements Closeable {
     public void close() {
         closed = true;
     }
-    
+
     private static boolean isTimeOut(long start, long timeout) {
         return timeout > -1 && System.currentTimeMillis() - start > timeout;
     }
-
 }

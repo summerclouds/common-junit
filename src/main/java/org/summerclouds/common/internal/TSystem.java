@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2002 Mike Hummel (mh@mhus.de)
+ * Copyright (C) 2022 Mike Hummel (mh@mhus.de)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -656,20 +656,20 @@ public class TSystem {
         return System.getProperty("java.version");
     }
 
-//    private static final Instrumentation instrumentation = ByteBuddyAgent.install();
+    //    private static final Instrumentation instrumentation = ByteBuddyAgent.install();
     /*
      * Use byte buddy to get the lambda byte code
      */
-//    public static byte[] getBytes(Class<?> c) throws IOException {
-//        //		String name = '/' + c.getName().replace('.', '/')+ ".class";
-//        //		InputStream is = c.getClassLoader().getResourceAsStream(name);
-//        //		byte[] bytes = MFile.readBinary(is);
-//        //		return bytes;
-//        ClassFileLocator locator = ClassFileLocator.AgentBased.of(instrumentation, c);
-//        TypeDescription.ForLoadedType desc = new TypeDescription.ForLoadedType(c);
-//        ClassFileLocator.Resolution resolution = locator.locate(desc.getName());
-//        return resolution.resolve();
-//    }
+    //    public static byte[] getBytes(Class<?> c) throws IOException {
+    //        //		String name = '/' + c.getName().replace('.', '/')+ ".class";
+    //        //		InputStream is = c.getClassLoader().getResourceAsStream(name);
+    //        //		byte[] bytes = MFile.readBinary(is);
+    //        //		return bytes;
+    //        ClassFileLocator locator = ClassFileLocator.AgentBased.of(instrumentation, c);
+    //        TypeDescription.ForLoadedType desc = new TypeDescription.ForLoadedType(c);
+    //        ClassFileLocator.Resolution resolution = locator.locate(desc.getName());
+    //        return resolution.resolve();
+    //    }
 
     public static long getJvmUptime() {
         RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
@@ -890,5 +890,4 @@ public class TSystem {
 
         return getCanonicalClassName(owner.getClass());
     }
-
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2002 Mike Hummel (mh@mhus.de)
+ * Copyright (C) 2022 Mike Hummel (mh@mhus.de)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -2109,7 +2109,7 @@ public class TString {
         if (to > in.length()) to = in.length();
         return in.substring(from, to);
     }
-    
+
     public static String toByteDisplayString(long bytes) {
         if (bytes < 2048) return bytes + " B";
         if (bytes < (1024l * 1024l)) return bytes / 1024 + " KB";
@@ -2118,8 +2118,7 @@ public class TString {
         if (bytes < (1024l * 1024l * 1024l * 1024l))
             return truncateDecimals((double) bytes / 1024d / 1024d / 1024d, 2) + " GB";
         if (bytes < (1024l * 1024l * 1024l * 1024l * 1024l))
-            return truncateDecimals((double) bytes / 1024d / 1024d / 1024d / 1024d, 2)
-                    + " TB";
+            return truncateDecimals((double) bytes / 1024d / 1024d / 1024d / 1024d, 2) + " TB";
         if (bytes < (1024l * 1024l * 1024l * 1024l * 1024l * 1024l))
             return truncateDecimals((double) bytes / 1024d / 1024d / 1024d / 1024d / 1024d, 2)
                     + " PB"; // Peta
@@ -2177,5 +2176,4 @@ public class TString {
         }
         return result;
     }
-    
 }

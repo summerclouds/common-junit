@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2002 Mike Hummel (mh@mhus.de)
+ * Copyright (C) 2022 Mike Hummel (mh@mhus.de)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -160,7 +160,7 @@ public class TStopWatch {
     public void print(PrintStream out) {
         out.println(toString());
     }
-    
+
     private static String getIntervalAsString(long msec) {
 
         boolean negative = false;
@@ -189,5 +189,4 @@ public class TStopWatch {
                 + '.'
                 + TCast.toString((int) (msec % 1000), 3);
     }
-
 }

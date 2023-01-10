@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2002 Mike Hummel (mh@mhus.de)
+ * Copyright (C) 2022 Mike Hummel (mh@mhus.de)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -117,9 +117,7 @@ public class TestUtil {
         rootLogger.setLevel(level);
     }
 
-    public static void enableDebug() {
-
-    }
+    public static void enableDebug() {}
 
     public static String getPluginVersion(String uriStr) {
         TUri uri = TUri.toUri(uriStr);
@@ -162,146 +160,143 @@ public class TestUtil {
                         + (method == null || method.isEmpty() ? "?" : method.get().getName()));
     }
 
-    
-    public static TCloseable withEnvironment(String ... keyValue ) {
-    	HashMap<String, String> newenv = new HashMap<>(System.getenv());
-    	for (int i = 0; i < keyValue.length; i=i+2)
-    		newenv.put(keyValue[i],keyValue[i+1]);
-    	
-    	try {
-	    	return new TCloseable() {
-				
-	    		private HashMap<String,String> oldEnv;
-				{
-	    			oldEnv = new HashMap<>(System.getenv());
-	    			setEnv(newenv);
-	    		}
-				@Override
-				public void close() {
-					try {
-						setEnv(oldEnv);
-					} catch (Exception e) {
-			    		throw new RuntimeException("can't reset environment",e);
-					}
-				}
-			};
-    	} catch (Exception e) {
-    		throw new RuntimeException("can't set environment",e);
-    	}
+    public static TCloseable withEnvironment(String... keyValue) {
+        HashMap<String, String> newenv = new HashMap<>(System.getenv());
+        for (int i = 0; i < keyValue.length; i = i + 2) newenv.put(keyValue[i], keyValue[i + 1]);
+
+        try {
+            return new TCloseable() {
+
+                private HashMap<String, String> oldEnv;
+
+                {
+                    oldEnv = new HashMap<>(System.getenv());
+                    setEnv(newenv);
+                }
+
+                @Override
+                public void close() {
+                    try {
+                        setEnv(oldEnv);
+                    } catch (Exception e) {
+                        throw new RuntimeException("can't reset environment", e);
+                    }
+                }
+            };
+        } catch (Exception e) {
+            throw new RuntimeException("can't set environment", e);
+        }
     }
-    
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void setEnv(Map<String, String> newenv) throws Exception {
-    	  try {
-    	    Class<?> processEnvironmentClass = Class.forName("java.lang.ProcessEnvironment");
-    	    Field theEnvironmentField = processEnvironmentClass.getDeclaredField("theEnvironment");
-    	    theEnvironmentField.setAccessible(true);
-    	    Map<String, String> env = (Map<String, String>) theEnvironmentField.get(null);
-    	    env.clear();
-    	    env.putAll(newenv);
-    	    Field theCaseInsensitiveEnvironmentField = processEnvironmentClass.getDeclaredField("theCaseInsensitiveEnvironment");
-    	    theCaseInsensitiveEnvironmentField.setAccessible(true);
-    	    Map<String, String> cienv = (Map<String, String>)     theCaseInsensitiveEnvironmentField.get(null);
-    	    cienv.clear();
-    	    cienv.putAll(newenv);
-    	  } catch (NoSuchFieldException e) {
-    	    Class[] classes = Collections.class.getDeclaredClasses();
-    	    Map<String, String> env = System.getenv();
-    	    for(Class cl : classes) {
-    	      if("java.util.Collections$UnmodifiableMap".equals(cl.getName())) {
-    	        Field field = cl.getDeclaredField("m");
-    	        field.setAccessible(true);
-    	        Object obj = field.get(env);
-    	        Map<String, String> map = (Map<String, String>) obj;
-    	        map.clear();
-    	        map.putAll(newenv);
-    	      }
-    	    }
-    	  }
-    	}
-    
-    
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static void setEnv(Map<String, String> newenv) throws Exception {
+        try {
+            Class<?> processEnvironmentClass = Class.forName("java.lang.ProcessEnvironment");
+            Field theEnvironmentField = processEnvironmentClass.getDeclaredField("theEnvironment");
+            theEnvironmentField.setAccessible(true);
+            Map<String, String> env = (Map<String, String>) theEnvironmentField.get(null);
+            env.clear();
+            env.putAll(newenv);
+            Field theCaseInsensitiveEnvironmentField =
+                    processEnvironmentClass.getDeclaredField("theCaseInsensitiveEnvironment");
+            theCaseInsensitiveEnvironmentField.setAccessible(true);
+            Map<String, String> cienv =
+                    (Map<String, String>) theCaseInsensitiveEnvironmentField.get(null);
+            cienv.clear();
+            cienv.putAll(newenv);
+        } catch (NoSuchFieldException e) {
+            Class[] classes = Collections.class.getDeclaredClasses();
+            Map<String, String> env = System.getenv();
+            for (Class cl : classes) {
+                if ("java.util.Collections$UnmodifiableMap".equals(cl.getName())) {
+                    Field field = cl.getDeclaredField("m");
+                    field.setAccessible(true);
+                    Object obj = field.get(env);
+                    Map<String, String> map = (Map<String, String>) obj;
+                    map.clear();
+                    map.putAll(newenv);
+                }
+            }
+        }
+    }
+
     public static void recordOrValidateDirectory(File dir, File definition) throws Exception {
-    	if (definition.exists())
-    		validateDirectory(dir, definition);
-    	else
-    		recordDirectory(dir, definition);
+        if (definition.exists()) validateDirectory(dir, definition);
+        else recordDirectory(dir, definition);
     }
 
-	private static void validateDirectory(File dir, File definition) throws Exception {
-		System.out.println(">>> Validate " + dir + " from " + definition);
-		int len = dir.getPath().length();
-		Properties prop = new Properties();
-		try (InputStream is = new FileInputStream(definition)) {
-			prop.load(is);
-		}
-		validateDirectory(dir, prop, len);
-	}
+    private static void validateDirectory(File dir, File definition) throws Exception {
+        System.out.println(">>> Validate " + dir + " from " + definition);
+        int len = dir.getPath().length();
+        Properties prop = new Properties();
+        try (InputStream is = new FileInputStream(definition)) {
+            prop.load(is);
+        }
+        validateDirectory(dir, prop, len);
+    }
 
-	private static void validateDirectory(File dir, Properties definition, int remove) throws Exception {
-		if (dir.isFile()) {
-			String md5 = "";
-			try (InputStream is = new FileInputStream(dir)) {
-				md5 = TCrypt.md5(is);
-			}
-			String old = definition.getProperty("file-" + dir.getPath().substring(remove));
-			assertEquals(old, md5, "File " + dir.getPath() + " is changed, new MD5: " + md5);
-		}
-		if (dir.isDirectory()) {
-			Set<String> dirs = new TreeSet<>();
-			Set<String> files = new TreeSet<>();
-			for (File sub : dir.listFiles()) {
-				if (!sub.getName().startsWith(".")) {
-					if (sub.isFile())
-						files.add(sub.getName());
-					else
-						dirs.add(sub.getName());
-					validateDirectory(sub, definition, remove);
-				}
-			}
-			String dirsStr = TString.join(dirs, ",");
-			String filesStr = TString.join(files, ",");
-			String dirsOld = definition.getProperty("dirs-" + dir.getPath().substring(remove));
-			String filesOld = definition.getProperty("files-" + dir.getPath().substring(remove));
-				
-			assertEquals(dirsOld, dirsStr, "Directories in " + dir.getParent() + " changed");
-			assertEquals(filesOld, filesStr, "Files in " + dir.getParent() + " changed");
-		}
-	}
+    private static void validateDirectory(File dir, Properties definition, int remove)
+            throws Exception {
+        if (dir.isFile()) {
+            String md5 = "";
+            try (InputStream is = new FileInputStream(dir)) {
+                md5 = TCrypt.md5(is);
+            }
+            String old = definition.getProperty("file-" + dir.getPath().substring(remove));
+            assertEquals(old, md5, "File " + dir.getPath() + " is changed, new MD5: " + md5);
+        }
+        if (dir.isDirectory()) {
+            Set<String> dirs = new TreeSet<>();
+            Set<String> files = new TreeSet<>();
+            for (File sub : dir.listFiles()) {
+                if (!sub.getName().startsWith(".")) {
+                    if (sub.isFile()) files.add(sub.getName());
+                    else dirs.add(sub.getName());
+                    validateDirectory(sub, definition, remove);
+                }
+            }
+            String dirsStr = TString.join(dirs, ",");
+            String filesStr = TString.join(files, ",");
+            String dirsOld = definition.getProperty("dirs-" + dir.getPath().substring(remove));
+            String filesOld = definition.getProperty("files-" + dir.getPath().substring(remove));
 
-	public static void recordDirectory(File dir, File definition) throws Exception {
-		System.out.println(">>> Record " + dir + " to " + definition);
-		int len = dir.getPath().length();
-		Properties prop = new Properties();
-		recordDirectory(dir, prop, len);
-		try (OutputStream os = new FileOutputStream(definition)) {
-			prop.store(os, dir.getPath());
-		}
-	}
-	
-	private static void recordDirectory(File dir, Properties definition, int remove) throws Exception {
-		if (dir.isFile()) {
-			try (InputStream is = new FileInputStream(dir)) {
-				String md5 = TCrypt.md5(is);
-				definition.setProperty("file-" + dir.getPath().substring(remove), md5);
-			}
-		}
-		if (dir.isDirectory()) {
-			Set<String> dirs = new TreeSet<>();
-			Set<String> files = new TreeSet<>();
-			for (File sub : dir.listFiles()) {
-				if (!sub.getName().startsWith(".")) {
-					if (sub.isFile())
-						files.add(sub.getName());
-					else
-						dirs.add(sub.getName());
-					recordDirectory(sub, definition, remove);
-				}
-			}
-			definition.setProperty("dirs-" + dir.getPath().substring(remove), TString.join(dirs, ","));
-			definition.setProperty("files-" + dir.getPath().substring(remove), TString.join(files, ","));
-		}
-	}
-    
-    
+            assertEquals(dirsOld, dirsStr, "Directories in " + dir.getParent() + " changed");
+            assertEquals(filesOld, filesStr, "Files in " + dir.getParent() + " changed");
+        }
+    }
+
+    public static void recordDirectory(File dir, File definition) throws Exception {
+        System.out.println(">>> Record " + dir + " to " + definition);
+        int len = dir.getPath().length();
+        Properties prop = new Properties();
+        recordDirectory(dir, prop, len);
+        try (OutputStream os = new FileOutputStream(definition)) {
+            prop.store(os, dir.getPath());
+        }
+    }
+
+    private static void recordDirectory(File dir, Properties definition, int remove)
+            throws Exception {
+        if (dir.isFile()) {
+            try (InputStream is = new FileInputStream(dir)) {
+                String md5 = TCrypt.md5(is);
+                definition.setProperty("file-" + dir.getPath().substring(remove), md5);
+            }
+        }
+        if (dir.isDirectory()) {
+            Set<String> dirs = new TreeSet<>();
+            Set<String> files = new TreeSet<>();
+            for (File sub : dir.listFiles()) {
+                if (!sub.getName().startsWith(".")) {
+                    if (sub.isFile()) files.add(sub.getName());
+                    else dirs.add(sub.getName());
+                    recordDirectory(sub, definition, remove);
+                }
+            }
+            definition.setProperty(
+                    "dirs-" + dir.getPath().substring(remove), TString.join(dirs, ","));
+            definition.setProperty(
+                    "files-" + dir.getPath().substring(remove), TString.join(files, ","));
+        }
+    }
 }

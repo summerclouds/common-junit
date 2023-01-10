@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2002 Mike Hummel (mh@mhus.de)
+ * Copyright (C) 2022 Mike Hummel (mh@mhus.de)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ public class TConsoleFactory extends TLogFactory {
     // public static boolean tracing = true;
     private boolean traces = true;
     private boolean printTime = true;
-	private PrintStream out;
+    private PrintStream out;
 
     public TConsoleFactory() {
         out = System.out;

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2002 Mike Hummel (mh@mhus.de)
+ * Copyright (C) 2022 Mike Hummel (mh@mhus.de)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,6 @@ public class TLog {
         //        tracer = getITracer(); - causes stack loop
 
         engine = logFactory.getInstance(name);
-
     }
 
     /**
@@ -116,7 +115,6 @@ public class TLog {
             default:
                 break;
         }
-
     }
 
     // toos from MDate
@@ -227,7 +225,7 @@ public class TLog {
     }
 
     public static TLog getLog(Object owner) {
-    	return new TLog(owner);
+        return new TLog(owner);
     }
 
     /**
@@ -272,5 +270,4 @@ public class TLog {
     public static void setVerbose(boolean verbose) {
         TLog.verbose = verbose;
     }
-
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2002 Mike Hummel (mh@mhus.de)
+ * Copyright (C) 2022 Mike Hummel (mh@mhus.de)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -835,7 +835,7 @@ public final class TCast {
         if (!s.startsWith("{") || !s.endsWith("}")) return def;
         s = s.substring(1, s.length() - 1);
         String[] parts = s.split(",");
-        HashMap<String,String> out = new HashMap<>();
+        HashMap<String, String> out = new HashMap<>();
         for (String item : parts) {
             int pos = item.indexOf('=');
             if (pos >= 0) out.put(item.substring(0, pos), item.substring(pos + 1));

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2002 Mike Hummel (mh@mhus.de)
+ * Copyright (C) 2022 Mike Hummel (mh@mhus.de)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ import org.xml.sax.SAXException;
 @SuppressWarnings("deprecation")
 public class TXml {
 
-	private static TLog log = TLog.getLog(TXml.class);
+    private static TLog log = TLog.getLog(TXml.class);
     private static DocumentBuilderFactory dbf;
     private static TransformerFactory transformerFactory;
 
@@ -465,11 +465,10 @@ public class TXml {
 
             } catch (ParserConfigurationException e) {
                 // This should catch a failed setFeature feature
-                log
-                        .e(
-                                "ParserConfigurationException was thrown. The feature '"
-                                        + FEATURE
-                                        + "' is probably not supported by your XML processor.");
+                log.e(
+                        "ParserConfigurationException was thrown. The feature '"
+                                + FEATURE
+                                + "' is probably not supported by your XML processor.");
             }
         }
         return dbf.newDocumentBuilder();
