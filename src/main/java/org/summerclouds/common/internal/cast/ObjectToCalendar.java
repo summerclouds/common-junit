@@ -28,9 +28,9 @@ import org.summerclouds.common.internal.TString;
 /**
  * Accepted formats:
  *
- * <p>now, jetzt integer as timestamp &lt;&lt;date&gt;&gt;[[ |_|T]&lt;&lt;time&gt;&gt;] date: yyyy-mm-dd dd.mm.yyyy
- * dd/mm/yyyy mm/dd/yyyy + locale == US time: MM:HH:ss[.SSS][Z][zone] MM-HH-ss[.SSS][Z][zone] MM:HH
- * am/pm[Z][zone] Jan 1, 2000 1:00 am[Z][zone]
+ * <p>now, jetzt integer as timestamp &lt;&lt;date&gt;&gt;[[ |_|T]&lt;&lt;time&gt;&gt;] date:
+ * yyyy-mm-dd dd.mm.yyyy dd/mm/yyyy mm/dd/yyyy + locale == US time: MM:HH:ss[.SSS][Z][zone]
+ * MM-HH-ss[.SSS][Z][zone] MM:HH am/pm[Z][zone] Jan 1, 2000 1:00 am[Z][zone]
  *
  * <p>Currently Not Accepted:
  *

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
 
     Copyright (C) 2022 Mike Hummel (mh@mhus.de)
@@ -19,11 +20,11 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.summerclouds.common</groupId>
   <artifactId>common-junit</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.4</version>
   <parent>
 	  <groupId>org.summerclouds.common</groupId>
 	  <artifactId>common-parent</artifactId>
-	  <version>0.0.6-SNAPSHOT</version>
+	  <version>0.0.8</version>
       <relativePath>../common-parent</relativePath>
   </parent>
   
