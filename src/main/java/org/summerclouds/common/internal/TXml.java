@@ -271,7 +271,7 @@ public class TXml {
      * Returns the first found element by path. Available search definitions are slash and brackets,
      * e.g. "/root/somenode/number[3]/name" or "/root/somenode/filter@key=value/name" Add an amp
      * before a node to collect all the nodes between too, e.g.
-     * "/root/somenode/&filter@key=value/name"
+     * "/root/somenode/&amp;filter@key=value/name"
      *
      * @param root Start element
      * @param path Path to go
