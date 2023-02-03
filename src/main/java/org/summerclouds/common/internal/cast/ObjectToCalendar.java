@@ -108,7 +108,7 @@ public class ObjectToCalendar implements Caster<Object, Calendar> {
             Calendar ret = toCalendar(ins, locale);
             if (ret == null) return def;
             return ret;
-        } catch (Throwable t) {
+        } catch (Exception t) {
             return def;
         }
     }
@@ -335,7 +335,7 @@ public class ObjectToCalendar implements Caster<Object, Calendar> {
 
             return null;
 
-        } catch (Throwable e) {
+        } catch (Exception e) {
             log.t(in, e);
         }
 
@@ -430,7 +430,7 @@ public class ObjectToCalendar implements Caster<Object, Calendar> {
         try {
             int out = Integer.parseInt(in);
             if (out > 0 && out < 13) return out - 1;
-        } catch (Throwable t) {
+        } catch (Exception t) {
         }
         in = in.toLowerCase().trim();
         Integer nr = monthCatalog.get(in);

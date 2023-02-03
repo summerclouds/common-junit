@@ -75,7 +75,7 @@ public class ObjectToInteger implements Caster<Object, Integer> {
             int r = Integer.parseInt(_in);
             if (ret != null) ret.setValue(r);
             return r;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             log.t(_in, e.toString());
             return def;
         }

@@ -1950,7 +1950,7 @@ public class TString {
                 }
                 sb.append("]");
             } else sb.append("[").append(o).append("]");
-        } catch (Throwable t) {
+        } catch (Exception t) {
         }
         return error;
     }

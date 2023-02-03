@@ -73,7 +73,7 @@ public class ObjectToLong implements Caster<Object, Long> {
             if (ret != null) ret.setValue(r);
             return r;
 
-        } catch (Throwable e) {
+        } catch (Exception e) {
             log.t(ins, e.toString());
         }
         return def;

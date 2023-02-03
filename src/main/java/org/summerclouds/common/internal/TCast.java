@@ -408,7 +408,7 @@ public final class TCast {
         try {
             NumberFormat nf = NumberFormat.getInstance(locale);
             return nf.parse(in).doubleValue();
-        } catch (Throwable t) {
+        } catch (Exception t) {
             return def;
         }
     }
@@ -425,7 +425,7 @@ public final class TCast {
         if (OBJECT_TO_INTEGER == null) {
             try {
                 return Integer.parseInt(String.valueOf(in));
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 return def;
             }
         }
@@ -444,7 +444,7 @@ public final class TCast {
         if (OBJECT_TO_LONG == null) {
             try {
                 return Long.parseLong(String.valueOf(in));
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 return def;
             }
         }
@@ -932,7 +932,7 @@ public final class TCast {
         String str = String.valueOf(value).trim().toUpperCase();
         try {
             return Enum.valueOf(def.getDeclaringClass(), str);
-        } catch (Throwable t) {
+        } catch (Exception t) {
         }
         return def;
     }

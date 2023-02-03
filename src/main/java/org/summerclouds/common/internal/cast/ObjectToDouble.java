@@ -50,7 +50,7 @@ public class ObjectToDouble implements Caster<Object, Double> {
             double r = Double.parseDouble(String.valueOf(in));
             if (ret != null) ret.setValue(r);
             return r;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             log.t(in, e.toString());
         }
         return def;

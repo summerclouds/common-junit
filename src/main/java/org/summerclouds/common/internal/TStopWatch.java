@@ -69,7 +69,7 @@ public class TStopWatch {
                 // getCurrentTimeAsString());
                 //					persistence.save();
                 //				}
-                //			} catch (Throwable t) {
+                //			} catch (Exception t) {
                 //				log().t(t);
                 //			}
 

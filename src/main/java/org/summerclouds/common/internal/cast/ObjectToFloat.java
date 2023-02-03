@@ -50,7 +50,7 @@ public class ObjectToFloat implements Caster<Object, Float> {
             float r = Float.parseFloat(String.valueOf(in));
             if (ret != null) ret.setValue(r);
             return r;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             log.t(in, e.toString());
         }
         return def;

@@ -37,7 +37,7 @@ public class ObjectToSqlDate implements Caster<Object, Date> {
         try {
             String ins = TCast.toString(in);
             return TCast.toSqlDate(TCast.toDate(ins, def));
-        } catch (Throwable t) {
+        } catch (Exception t) {
             return def;
         }
     }

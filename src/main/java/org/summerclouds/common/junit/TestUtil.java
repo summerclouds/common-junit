@@ -71,7 +71,7 @@ public class TestUtil {
             final org.slf4j.Logger logger2 = LoggerFactory.getLogger(logger);
             final ch.qos.logback.classic.Logger logger3 = (ch.qos.logback.classic.Logger) logger2;
             logger3.setLevel(ch.qos.logback.classic.Level.toLevel(l));
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
         }
     }

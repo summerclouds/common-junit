@@ -835,7 +835,7 @@ public class TSystem {
                                         while ((line = errReader.readLine()) != null) {
                                             control.stderr(line);
                                         }
-                                    } catch (Throwable t) {
+                                    } catch (Exception t) {
                                     }
                                 }
                             });
